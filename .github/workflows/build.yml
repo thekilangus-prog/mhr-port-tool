@@ -6,6 +6,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: unzip -q android.zip -d proj
+      - name: Tambah repo Chaquopy
+        run: |
+          cat > proj/settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+                  maven { url "https://chaquo.com/maven" }
+              }
+          }
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url "https://chaquo.com/maven" }
+              }
+          }
+          rootProject.name = "MHRPortTool"
+          include ':app'
+          EOF
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '17' }
       - uses: gradle/actions/setup-gradle@v4
